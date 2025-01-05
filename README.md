@@ -41,6 +41,19 @@ Once you have installed the dependencies, you can start the server by running:
 
     npm start
 
+## Running the Server with Docker
+If you prefer to run the server in a Docker container, follow these steps:
+
+1. Build the Docker image:
+    ```
+    docker build -t crypto-server .
+    ```
+    
+2. Run the Docker container:
+    ```
+    docker run -p 3000:3000 crypto-server
+    ```
+
 ## Available Endpoints
 
 - **GET /:** Returns a simple message to indicate that the server is running.
