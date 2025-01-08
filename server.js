@@ -13,21 +13,29 @@ app.get('/', (req, res) => {
 
 // Mock data for cryptocurrencies
 const cryptos = [
-    { name: 'Bitcoin', symbol: 'BTC', value: 50000, changePer: 0 },
-    { name: 'Ethereum', symbol: 'ETH', value: 3500, changePer: 0 },
-    { name: 'Ripple', symbol: 'XRP', value: 1.2, changePer: 0 },
-    { name: 'Litecoin', symbol: 'LTC', value: 200, changePer: 0 }
+    { id: 1, name: 'Bitcoin', symbol: 'BTC', value: 50000, changePer: 0, history: [] },
+    { id: 2, name: 'Ethereum', symbol: 'ETH', value: 3500, changePer: 0, history: [] },
+    { id: 3, name: 'Ripple', symbol: 'XRP', value: 1.2, changePer: 0, history: [] },
+    { id: 4, name: 'Litecoin', symbol: 'LTC', value: 200, changePer: 0, history: [] },
 ];
 
 // Function to simulate value changes for cryptocurrencies
 function updateCryptoValues() {
+    let id = Math.floor(getRandomNumber(1, 5));
     cryptos.forEach(crypto => {
-        // Randomly increase or decrease the value by up to 5%
-        const changePercent = (Math.random() * 10 - 5) / 100;
-        crypto.changePer = changePercent * 100;
-        crypto.value = parseFloat((crypto.value * (1 + changePercent)).toFixed(2));
+        // Randomly increase or decrease the value by up to 5% depending on id.
+        if (crypto.id == id) {
+            const changePercent = (Math.random() * 10 - 5) / 100;
+            crypto.changePer = changePercent * 100;
+            crypto.value = parseFloat((crypto.value * (1 + changePercent)).toFixed(2));
+            crypto.history.push(crypto.value);
+        }
     });
     io.emit('cryptoUpdate', cryptos.toString); // Emit updated values to all connected clients
+}
+
+function getRandomNumber(min, max) {
+    return Math.random() * (max - min) + min;
 }
 
 // Endpoint to get the current values of cryptocurrencies
